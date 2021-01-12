@@ -4,11 +4,12 @@
 | URI                                                | HTTP Method |   HTTP Status   | Description                                           |
 |----------------------------------------------------|-------------|-----------------|-------------------------------------------------------|
 | herobook.com/api/heroes?role={roleName}              		     	 | GET         |   200 OK		 | Return the list of name of heroes when role is visitor               |
-| domain.com/api/heroes/{heroName}                         | GET         |   200 OK        | Return the details for that hero                           |
+| herobook.com/api/heroes/{heroName}                         | GET         |   200 OK        | Return the details for that hero                           |
 
 
 ---
-** GET /api/heroes?role={roleName}  **
+**GET /api/heroes?role={roleName}**
+
 Response Body:
 ```json
 {
@@ -18,7 +19,8 @@ Response Body:
 
 ---
 
-** GET /api/heroes/{heroName}  **
+**GET /api/heroes/{heroName}**
+
 Response Body:
 ```json
 {
