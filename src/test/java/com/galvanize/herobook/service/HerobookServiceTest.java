@@ -1,21 +1,30 @@
 package com.galvanize.herobook.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galvanize.herobook.model.Hero;
 import com.galvanize.herobook.repository.HerobookRepository;
 
 public class HerobookServiceTest {
+	
+	private String heroPath = "src/test/resources/hero.json";
 
 	HerobookRepository herobookRepository;
 	HerobookService herobookService;
@@ -42,6 +51,28 @@ public class HerobookServiceTest {
 		assertTrue(actualHeroes.contains("Spider Man"));
 
 		verify(herobookRepository).findAll();
+	}
+	
+	
+	@Test
+	public void getHeroDetails() throws IOException {	
+
+		when(herobookRepository.findById(Mockito.anyString())).thenReturn(Optional.of(heroContent()));
+
+		Hero actualHero = herobookService.getHeroDetails("SpiderMan");
+
+		assertNotNull(actualHero);
+
+		assertEquals("Peter Parker",actualHero.getRealName());
+
+		verify(herobookRepository).findById(Mockito.anyString());
+	}
+	
+	private Hero heroContent() throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		Hero hero = mapper.readValue(new File(heroPath), Hero.class);
+		return hero;
+		
 	}
 	
 }

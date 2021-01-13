@@ -22,6 +22,6 @@ public class HerobookService {
 	}
 
 	public Hero getHeroDetails(String heroName) {		
-		return new Hero();
+		return herobookRepository.findById(heroName).get();
 	}
 }
