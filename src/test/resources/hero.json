@@ -1,0 +1,15 @@
+{
+"image" : "string",
+"realName" : "Peter Parker",
+"heroName" : "SpiderMan",
+"height" : "180 cm",
+"weight" : "70 Kg",
+"specialPower" : "Web",
+"intelligence" : "Spider Sense",
+"strength" : "UnKnown",
+"power" : "Web",
+"speed" : "High",
+"agility" : "High",
+"description" : "string",
+"story" : "string"
+}

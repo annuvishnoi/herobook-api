@@ -20,4 +20,8 @@ public class HerobookService {
 	public List<String> getHeroes() {
 		return herobookRepository.findAll().stream().map(Hero::getHeroName).collect(Collectors.toList());
 	}
+
+	public Hero getHeroDetails(String heroName) {		
+		return new Hero();
+	}
 }

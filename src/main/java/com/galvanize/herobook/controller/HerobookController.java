@@ -1,6 +1,7 @@
 package com.galvanize.herobook.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,15 @@ public class HerobookController {
 			@RequestParam(defaultValue = "visitor", required = false, name = "role") String role) {
 		HerobookResponse response = new HerobookResponse();
 		response.setData(herobookService.getHeroes());
+		return response;
+	}
+	
+	@GetMapping("/{heroName}")
+	public HerobookResponse getHeroByName(
+			@PathVariable String heroName,
+			@RequestParam(defaultValue = "visitor", required = false, name = "role") String role) {
+		HerobookResponse response = new HerobookResponse();
+		response.setData(herobookService.getHeroDetails(heroName));
 		return response;
 	}
 }
