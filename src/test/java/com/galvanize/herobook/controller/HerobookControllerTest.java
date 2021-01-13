@@ -43,5 +43,25 @@ public class HerobookControllerTest {
 		verify(herobookService).getHeroes();
 	}
 	
+	@Test
+	public void test_getHeroes_AsVisitor_returnsMultipleHeroes() throws Exception {
+		
+		List<String> heroes = new ArrayList<>();
+		heroes.add("Spider Man");
+		heroes.add("Robo Cop");
+		
+		when(herobookService.getHeroes()).thenReturn(heroes);
+		
+		mockMvc.perform(
+				get("/api/heroes")
+				)
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data").isArray())
+		.andExpect(jsonPath("$.data").exists())
+		.andExpect(jsonPath("$.data.length()").value(2));
+		
+		verify(herobookService).getHeroes();
+	}
+	
 
 }
