@@ -126,6 +126,26 @@ public class HerobookControllerTest {
 		verify(herobookService).getVillains();
 	}
 	
+	@Test
+	public void test_getVillains_AsVisitor_returnsMultipleVillains() throws Exception {
+		
+		List<String> villains = new ArrayList<>();
+		villains.add("Spider Man Villain");
+		villains.add("Robo Cop Villain");
+		
+		when(herobookService.getVillains()).thenReturn(villains);
+		
+		mockMvc.perform(
+				get("/api/villains")
+				)
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data").isArray())
+		.andExpect(jsonPath("$.data").exists())
+		.andExpect(jsonPath("$.data.length()").value(2));
+		
+		verify(herobookService).getVillains();
+	}
+	
 	private Hero heroContent() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		Hero hero = mapper.readValue(new File(heroPath), Hero.class);

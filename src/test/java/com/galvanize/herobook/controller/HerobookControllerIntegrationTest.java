@@ -19,7 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galvanize.herobook.model.Hero;
+import com.galvanize.herobook.model.Villain;
 import com.galvanize.herobook.repository.HeroRepository;
+import com.galvanize.herobook.repository.VillainRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,7 +35,10 @@ public class HerobookControllerIntegrationTest {
 	MockMvc mockMvc;
 	
 	@Autowired
-	HeroRepository repository;
+	HeroRepository heroRepository;
+	
+	@Autowired
+	VillainRepository villainRepository;
 	
 		
 	@Test
@@ -52,7 +57,7 @@ public class HerobookControllerIntegrationTest {
 	@Order(2)
 	public void test_getHeroes_AsVisitor_ReturnsSingleHero() throws Exception {
 		
-		repository.save(new Hero("Spider Man"));
+		heroRepository.save(new Hero("Spider Man"));
 		
 		mockMvc.perform(
 				get("/api/heroes")
@@ -67,7 +72,7 @@ public class HerobookControllerIntegrationTest {
 	@Order(3)
 	public void test_getHeroes_AsVisitor_ReturnsMultipleHero() throws Exception {
 		
-		repository.save(new Hero("Batman"));	
+		heroRepository.save(new Hero("Batman"));	
 		
 		mockMvc.perform(
 				get("/api/heroes")
@@ -82,7 +87,7 @@ public class HerobookControllerIntegrationTest {
 	@Order(4)
 	public void test_getHero_asVisitor_returnsHeroDetail() throws Exception {		
 	
-		repository.save(heroContent());
+		heroRepository.save(heroContent());
 		
 		mockMvc.perform(
 				get("/api/heroes/{heroName}","SpiderMan")
@@ -110,6 +115,34 @@ public class HerobookControllerIntegrationTest {
 		.andExpect(jsonPath("$.errorMessages.length()").value(1))
 		.andExpect(jsonPath("$.errorMessages[0]").value("Hero not found"));		
 	
+	}
+	
+	@Test
+	@Order(6)
+	public void test_getVillains_AsVisitor_ReturnsEmptyList() throws Exception {
+		mockMvc.perform(
+				get("/api/villains")
+				)
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data").isArray())
+		.andExpect(jsonPath("$.data").exists())
+		.andExpect(jsonPath("$.data.length()").value(0));
+	}
+	
+	@Test
+	@Order(7)
+	public void test_getVillains_AsVisitor_ReturnsMultipleVillain() throws Exception {
+		
+		villainRepository.save(new Villain("Batman Villian"));
+		villainRepository.save(new Villain("Spider Man Villian"));	
+		
+		mockMvc.perform(
+				get("/api/villains")
+				)
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data").isArray())
+		.andExpect(jsonPath("$.data").exists())
+		.andExpect(jsonPath("$.data.length()").value(2));
 	}
 	
 	private Hero heroContent() throws IOException {
