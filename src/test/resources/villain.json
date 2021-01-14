@@ -1,0 +1,16 @@
+{
+"image" : "string",
+"archRival" : "Spider Man",
+"realName" : "Osbourn",
+"villainName" : "Greengoblin",
+"height" : "180 cm",
+"weight" : "70 Kg",
+"specialPower" : "Web",
+"intelligence" : "Spider Sense",
+"strength" : "UnKnown",
+"power" : "Web",
+"speed" : "High",
+"agility" : "High",
+"description" : "string",
+"story" : "string"
+}

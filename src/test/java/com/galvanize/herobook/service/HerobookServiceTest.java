@@ -29,6 +29,7 @@ import com.galvanize.herobook.repository.VillainRepository;
 public class HerobookServiceTest {
 
 	private String heroPath = "src/test/resources/hero.json";
+	private String villainPath = "src/test/resources/villain.json";
 
 	HeroRepository herobookRepository;
 	HerobookService herobookService;
@@ -102,10 +103,43 @@ public class HerobookServiceTest {
 		verify(villainRepository).findAll();
 	}
 	
+	@Test
+	public void getVillainDetails() throws IOException, HerobookException {
+
+		when(villainRepository.findById(Mockito.anyString())).thenReturn(Optional.of(villainContent()));
+
+		Villain actualVillain = herobookService.getVillainDetails("Greengoblin");
+
+		assertNotNull(actualVillain);
+
+		assertEquals("Osbourn", actualVillain.getRealName());
+
+		verify(villainRepository).findById(Mockito.anyString());
+	}
+	
+	@Test
+	public void getVillainDetails_villainNotFound_thenThrowException() throws Exception {
+		
+		when(villainRepository.findById(Mockito.anyString())).thenReturn(Optional.empty());
+		HerobookException expected = assertThrows(HerobookException.class,
+				() -> herobookService.getVillainDetails("Jonathan"));// Not a villain
+		
+		assertEquals("Villain not found", expected.getMessage());
+
+		verify(villainRepository).findById(Mockito.anyString());
+	}
+	
 	private Hero heroContent() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		Hero hero = mapper.readValue(new File(heroPath), Hero.class);
 		return hero;
+
+	}
+	
+	private Villain villainContent() throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		Villain villain = mapper.readValue(new File(villainPath), Villain.class);
+		return villain;
 
 	}
 

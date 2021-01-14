@@ -1,6 +1,5 @@
 package com.galvanize.herobook.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,4 +33,9 @@ public class HerobookService {
 	public List<String> getVillains() {
 		return villainRepository.findAll().stream().map(Villain::getVillainName).collect(Collectors.toList());
 	}
+
+	public Villain getVillainDetails(String villainName) throws HerobookException{
+		return villainRepository.findById(villainName).orElseThrow(() -> new HerobookException("Villain not found"));
+	}
 }
+
