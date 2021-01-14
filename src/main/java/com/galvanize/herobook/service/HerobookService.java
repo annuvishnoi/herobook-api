@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.galvanize.herobook.exception.HerobookException;
 import com.galvanize.herobook.model.Hero;
 import com.galvanize.herobook.repository.HerobookRepository;
 
@@ -21,7 +22,7 @@ public class HerobookService {
 		return herobookRepository.findAll().stream().map(Hero::getHeroName).collect(Collectors.toList());
 	}
 
-	public Hero getHeroDetails(String heroName) {		
-		return herobookRepository.findById(heroName).get();
+	public Hero getHeroDetails(String heroName) throws HerobookException {		
+		return herobookRepository.findById(heroName).orElseThrow(() -> new HerobookException("Hero not found"));
 	}
 }

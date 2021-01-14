@@ -99,6 +99,19 @@ public class HerobookControllerIntegrationTest {
 		
 	}
 	
+	@Test
+	@Order(5)
+	public void test_getHero_asVisitor_returnsHeroNotFound() throws Exception {			
+		mockMvc.perform(
+				get("/api/heroes/{heroName}","Jonathan")
+				)
+		.andExpect(status().isBadRequest())
+		.andExpect(jsonPath("$.data").isEmpty())		
+		.andExpect(jsonPath("$.errorMessages.length()").value(1))
+		.andExpect(jsonPath("$.errorMessages[0]").value("Hero not found"));		
+	
+	}
+	
 	private Hero heroContent() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		Hero hero = mapper.readValue(new File(heroPath), Hero.class);

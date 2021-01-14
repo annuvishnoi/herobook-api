@@ -4,7 +4,7 @@
 | URI                                                | HTTP Method |   HTTP Status   | Description                                           |
 |----------------------------------------------------|-------------|-----------------|-------------------------------------------------------|
 | herobook.com/api/heroes?role={roleName}              		     	 | GET         |   200 OK		 | Return the list of name of heroes when role is visitor               |
-| herobook.com/api/heroes/{heroName}                         | GET         |   200 OK        | Return the details for that hero                           |
+| herobook.com/api/heroes/{heroName}?role={roleName}                  | GET         |   200 OK        | Return the details for that hero                           |
 
 
 ---
@@ -38,7 +38,11 @@ Response Body:
 		"agility" : "string",
 		"description" : "string",
 		"story" : "string"
-	}	
+	},
+	"errorMessages":[
+		"errors",
+		"errors"
+	]	
 }
 ```
 

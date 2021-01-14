@@ -3,6 +3,7 @@ package com.galvanize.herobook.controller;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -19,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.galvanize.herobook.exception.HerobookException;
 import com.galvanize.herobook.model.Hero;
 import com.galvanize.herobook.service.HerobookService;
 
@@ -87,6 +89,22 @@ public class HerobookControllerTest {
 		.andExpect(jsonPath("$.data.height").value("180 cm"))
 		.andExpect(jsonPath("$.data.specialPower").value("Web"))
 		.andExpect(jsonPath("$.data.agility").value("High"));
+		
+		verify(herobookService).getHeroDetails(Mockito.anyString());
+	}
+	
+	@Test
+	public void test_getHero_asVisitor_returnsHeroNotFound() throws Exception {		
+	
+		when(herobookService.getHeroDetails(Mockito.anyString())).thenThrow(new HerobookException("Hero not found"));
+		
+		mockMvc.perform(
+				get("/api/heroes/{heroName}","Jonathan")
+				)
+		.andExpect(status().isBadRequest())
+		.andExpect(jsonPath("$.data").isEmpty())		
+		.andExpect(jsonPath("$.errorMessages.length()").value(1))
+		.andExpect(jsonPath("$.errorMessages[0]").value("Hero not found"));
 		
 		verify(herobookService).getHeroDetails(Mockito.anyString());
 	}

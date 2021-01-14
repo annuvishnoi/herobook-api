@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.galvanize.herobook.exception.HerobookException;
 import com.galvanize.herobook.response.HerobookResponse;
 import com.galvanize.herobook.service.HerobookService;
 
@@ -30,7 +31,7 @@ public class HerobookController {
 	@GetMapping("/{heroName}")
 	public HerobookResponse getHeroByName(
 			@PathVariable String heroName,
-			@RequestParam(defaultValue = "visitor", required = false, name = "role") String role) {
+			@RequestParam(defaultValue = "visitor", required = false, name = "role") String role) throws HerobookException {
 		HerobookResponse response = new HerobookResponse();
 		response.setData(herobookService.getHeroDetails(heroName));
 		return response;
