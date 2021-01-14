@@ -1,7 +1,9 @@
 package com.galvanize.herobook.model;
 
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public class Persona {
-	
 	
 	private String image;
 	
@@ -26,36 +28,11 @@ public class Persona {
 	private String description;
 	
 	private String story;
-
 	
 	public Persona() {
 		super();
 	}
 	
-	
-
-
-	public Persona(String image, String realName, String height, String weight, String specialPower,
-			String intelligence, String strength, String power, String speed, String agility, String description,
-			String story) {
-		super();
-		this.image = image;
-		this.realName = realName;
-		this.height = height;
-		this.weight = weight;
-		this.specialPower = specialPower;
-		this.intelligence = intelligence;
-		this.strength = strength;
-		this.power = power;
-		this.speed = speed;
-		this.agility = agility;
-		this.description = description;
-		this.story = story;
-	}
-
-
-
-
 	public String getImage() {
 		return image;
 	}
@@ -151,6 +128,5 @@ public class Persona {
 	public void setStory(String story) {
 		this.story = story;
 	}
-	
 	
 }
