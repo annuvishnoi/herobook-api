@@ -11,7 +11,7 @@ import com.galvanize.herobook.response.HerobookResponse;
 import com.galvanize.herobook.service.HerobookService;
 
 @RestController
-@RequestMapping("/api/heroes")
+@RequestMapping("/api/")
 public class HerobookController {
 	
 	HerobookService herobookService;
@@ -20,7 +20,7 @@ public class HerobookController {
 		this.herobookService = herobookService;
 	}
 
-	@GetMapping
+	@GetMapping("heroes")
 	public HerobookResponse getHeroes(
 			@RequestParam(defaultValue = "visitor", required = false, name = "role") String role) {
 		HerobookResponse response = new HerobookResponse();
@@ -28,12 +28,20 @@ public class HerobookController {
 		return response;
 	}
 	
-	@GetMapping("/{heroName}")
+	@GetMapping("heroes/{heroName}")
 	public HerobookResponse getHeroByName(
 			@PathVariable String heroName,
 			@RequestParam(defaultValue = "visitor", required = false, name = "role") String role) throws HerobookException {
 		HerobookResponse response = new HerobookResponse();
 		response.setData(herobookService.getHeroDetails(heroName));
+		return response;
+	}
+	
+	@GetMapping("villains")
+	public HerobookResponse getVillains(
+			@RequestParam(defaultValue = "visitor", required = false, name = "role") String role) {
+		HerobookResponse response = new HerobookResponse();
+		response.setData(herobookService.getVillains());
 		return response;
 	}
 }

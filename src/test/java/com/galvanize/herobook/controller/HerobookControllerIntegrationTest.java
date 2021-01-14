@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galvanize.herobook.model.Hero;
-import com.galvanize.herobook.repository.HerobookRepository;
+import com.galvanize.herobook.repository.HeroRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,7 +33,7 @@ public class HerobookControllerIntegrationTest {
 	MockMvc mockMvc;
 	
 	@Autowired
-	HerobookRepository repository;
+	HeroRepository repository;
 	
 		
 	@Test

@@ -1,5 +1,6 @@
 package com.galvanize.herobook.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,15 +8,19 @@ import org.springframework.stereotype.Service;
 
 import com.galvanize.herobook.exception.HerobookException;
 import com.galvanize.herobook.model.Hero;
-import com.galvanize.herobook.repository.HerobookRepository;
+import com.galvanize.herobook.model.Villain;
+import com.galvanize.herobook.repository.HeroRepository;
+import com.galvanize.herobook.repository.VillainRepository;
 
 @Service
 public class HerobookService {
 	
-	HerobookRepository herobookRepository;
+	HeroRepository herobookRepository;
+	VillainRepository villainRepository;
 	
-	public HerobookService(HerobookRepository herobookRepository) {
+	public HerobookService(HeroRepository herobookRepository, VillainRepository villainRepository) {
 		this.herobookRepository = herobookRepository;
+		this.villainRepository = villainRepository;
 	}
 
 	public List<String> getHeroes() {
@@ -24,5 +29,9 @@ public class HerobookService {
 
 	public Hero getHeroDetails(String heroName) throws HerobookException {		
 		return herobookRepository.findById(heroName).orElseThrow(() -> new HerobookException("Hero not found"));
+	}
+
+	public List<String> getVillains() {
+		return villainRepository.findAll().stream().map(Villain::getVillainName).collect(Collectors.toList());
 	}
 }

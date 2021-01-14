@@ -22,19 +22,24 @@ import org.mockito.Mockito;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galvanize.herobook.exception.HerobookException;
 import com.galvanize.herobook.model.Hero;
-import com.galvanize.herobook.repository.HerobookRepository;
+import com.galvanize.herobook.model.Villain;
+import com.galvanize.herobook.repository.HeroRepository;
+import com.galvanize.herobook.repository.VillainRepository;
 
 public class HerobookServiceTest {
 
 	private String heroPath = "src/test/resources/hero.json";
 
-	HerobookRepository herobookRepository;
+	HeroRepository herobookRepository;
 	HerobookService herobookService;
 
+	VillainRepository villainRepository;
+	
 	@BeforeEach
 	void initRepository() {
-		herobookRepository = mock(HerobookRepository.class);
-		herobookService = new HerobookService(herobookRepository);
+		herobookRepository = mock(HeroRepository.class);
+		villainRepository = mock(VillainRepository.class);
+		herobookService = new HerobookService(herobookRepository, villainRepository);
 	}
 
 	@Test
@@ -79,6 +84,24 @@ public class HerobookServiceTest {
 		verify(herobookRepository).findById(Mockito.anyString());
 	}
 
+	@Test
+	public void getVillains() {
+
+		List<Villain> villains = new ArrayList<>();
+		Villain villain = new Villain("Spider Man");
+		villains.add(villain);
+
+		when(villainRepository.findAll()).thenReturn(villains);
+
+		List<String> actualVillains = herobookService.getVillains();
+
+		assertFalse(actualVillains.isEmpty());
+
+		assertTrue(actualVillains.contains("Spider Man"));
+
+		verify(villainRepository).findAll();
+	}
+	
 	private Hero heroContent() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		Hero hero = mapper.readValue(new File(heroPath), Hero.class);

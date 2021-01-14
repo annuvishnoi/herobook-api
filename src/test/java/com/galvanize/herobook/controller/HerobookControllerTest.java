@@ -109,6 +109,24 @@ public class HerobookControllerTest {
 		verify(herobookService).getHeroDetails(Mockito.anyString());
 	}
 	
+	@Test
+	public void test_getVillains_AsVisitor_returnsZeroVillains() throws Exception {
+		
+		List<String> villains = new ArrayList<>();
+		
+		when(herobookService.getVillains()).thenReturn(villains);
+		
+		mockMvc.perform(
+				get("/api/villains")
+				)
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data").isArray())
+		.andExpect(jsonPath("$.data").exists())
+		.andExpect(jsonPath("$.data.length()").value(0));
+		
+		verify(herobookService).getVillains();
+	}
+	
 	private Hero heroContent() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		Hero hero = mapper.readValue(new File(heroPath), Hero.class);
