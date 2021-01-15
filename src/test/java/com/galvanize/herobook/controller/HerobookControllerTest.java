@@ -89,7 +89,14 @@ public class HerobookControllerTest {
 		.andExpect(jsonPath("$.data.weight").value("70 Kg"))
 		.andExpect(jsonPath("$.data.height").value("180 cm"))
 		.andExpect(jsonPath("$.data.specialPower").value("Web"))
-		.andExpect(jsonPath("$.data.agility").value("High"));
+		.andExpect(jsonPath("$.data.agility").value("High"))
+		.andExpect(jsonPath("$.data.image").value("/src/heroImage.jpg"))
+		.andExpect(jsonPath("$.data.intelligence").value("Spider Sense"))
+		.andExpect(jsonPath("$.data.strength").value("UnKnown"))
+		.andExpect(jsonPath("$.data.power").value("Web"))
+		.andExpect(jsonPath("$.data.description").value("Hero with spider strength"))
+		.andExpect(jsonPath("$.data.story").value("A long Story"))
+		.andExpect(jsonPath("$.data.speed").value("High"));
 		
 		verify(herobookService).getHeroDetails(Mockito.anyString());
 	}

@@ -1,5 +1,5 @@
 {
-"image" : "string",
+"image" : "/src/heroImage.jpg",
 "realName" : "Peter Parker",
 "heroName" : "SpiderMan",
 "height" : "180 cm",
@@ -10,6 +10,6 @@
 "power" : "Web",
 "speed" : "High",
 "agility" : "High",
-"description" : "string",
-"story" : "string"
+"description" : "Hero with spider strength",
+"story" : "A long Story"
 }
