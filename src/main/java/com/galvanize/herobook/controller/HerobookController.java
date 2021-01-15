@@ -44,6 +44,15 @@ public class HerobookController {
 		response.setData(herobookService.getVillains());
 		return response;
 	}
+	
+	@GetMapping("villains/{villainName}")
+	public HerobookResponse getVillainByName(
+			@PathVariable String villainName,
+			@RequestParam(defaultValue = "visitor", required = false, name = "role") String role) throws HerobookException {
+		HerobookResponse response = new HerobookResponse();
+		response.setData(herobookService.getVillainDetails(villainName));
+		return response;
+	}
 }
 
 

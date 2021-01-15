@@ -21,12 +21,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galvanize.herobook.exception.HerobookException;
 import com.galvanize.herobook.model.Hero;
+import com.galvanize.herobook.model.Villain;
 import com.galvanize.herobook.service.HerobookService;
 
 @WebMvcTest
 public class HerobookControllerTest {
 	
 	private String heroPath = "src/test/resources/hero.json";
+	private String villainPath = "src/test/resources/villain.json";
 	
 	@Autowired
 	MockMvc mockMvc;
@@ -146,12 +148,56 @@ public class HerobookControllerTest {
 		verify(herobookService).getVillains();
 	}
 	
+	
+	@Test
+	public void test_getVillain_asVisitor_returnsVillainDetail() throws Exception {		
+	
+		when(herobookService.getVillainDetails(Mockito.anyString())).thenReturn(villainContent());
+		
+		mockMvc.perform(
+				get("/api/villains/{villainName}","Greengoblin")
+				)
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data").exists())
+		.andExpect(jsonPath("$.data.villainName").value("Greengoblin"))
+		.andExpect(jsonPath("$.data.realName").value("Osbourn"))
+		.andExpect(jsonPath("$.data.weight").value("70 Kg"))
+		.andExpect(jsonPath("$.data.height").value("180 cm"))
+		.andExpect(jsonPath("$.data.specialPower").value("Web"))
+		.andExpect(jsonPath("$.data.agility").value("High"));
+		
+		
+		
+		verify(herobookService).getVillainDetails(Mockito.anyString());
+	}
+	
+	@Test
+	public void test_getVillain_asVisitor_returnsVillainNotFound() throws Exception {		
+	
+		when(herobookService.getVillainDetails(Mockito.anyString())).thenThrow(new HerobookException("Villain not found"));
+		
+		mockMvc.perform(
+				get("/api/villains/{villainName}","Jonathan")
+				)
+		.andExpect(status().isBadRequest())
+		.andExpect(jsonPath("$.data").isEmpty())		
+		.andExpect(jsonPath("$.errorMessages.length()").value(1))
+		.andExpect(jsonPath("$.errorMessages[0]").value("Villain not found"));
+		
+		verify(herobookService).getVillainDetails(Mockito.anyString());
+	}
+	
 	private Hero heroContent() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		Hero hero = mapper.readValue(new File(heroPath), Hero.class);
 		return hero;
 		
 	}
-	
+	private Villain villainContent() throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		Villain villain = mapper.readValue(new File(villainPath), Villain.class);
+		return villain;
+
+	}
 
 }
