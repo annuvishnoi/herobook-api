@@ -1,20 +1,23 @@
 package com.galvanize.herobook.exception;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.galvanize.herobook.response.HerobookResponse;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class HerobookExceptionHandler {
 
 	@ExceptionHandler(HerobookException.class)
-	public ResponseEntity<HerobookResponse> handleHeroNotFound(HerobookException exception) {
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public HerobookResponse handleHeroNotFound(HerobookException exception) {
 		HerobookResponse response = new HerobookResponse();
 		response.addErrorMessage(exception.getMessage());
-		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		return response;
 	}
 
 }
+
+
